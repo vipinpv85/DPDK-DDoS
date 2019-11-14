@@ -18,4 +18,30 @@ to leverage DPDK libraries and PMD feature to build line rate processing for
  - [ ] service core based telemetry and data base update.
  - [ ] eBPF inspired flow distribution to multiple workers
 
+## How to Build?
+
+### dependency
+ - DPDK
+ - libnuma-dev
+
+### version:
+| software | release |
+| -- | -- |
+| DPDK | dpdk-stable-18.11.4 |
+
+### Build and Run
+
+#### DPDK 18.11.4
+- Download DPDK from dpdk.org.
+- Untar DPDK tar file.
+- Execute the following commands
+```
+ cd <to unatar dpdk folder>
+ make config T=x86_64-native-linuxapp-gcc O=x86_64-native-linuxapp-gcc
+ export RTE_SDK=$PWD
+ export RTE_TARGET=x86_64-native-linuxapp-gcc
+ cd x86_64-native-linuxapp-gcc
+ make -j 4
+```
+- Test the custom build by cross checking examples like helloworld & l2fwd.
 
