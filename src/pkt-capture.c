@@ -94,7 +94,7 @@ port_init(uint16_t port, struct rte_mempool *mbuf_pool)
 static __attribute__((noreturn)) void
 lcore_main(void)
 {
-        uint16_t port;
+	uint16_t port;
 
         /*
          * Check that the port is on the same NUMA node as the polling thread
