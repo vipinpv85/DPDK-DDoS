@@ -11,11 +11,11 @@ to leverage DPDK libraries and PMD feature to build line rate processing for
 ## Design
 
 ## To Do
- [ ] Primary configruation and Secodnary Processing
- [ ] Failure of secodnary, Primary pass through
- [ ] Flow calssification based on destination IP
- [ ] Inbound IP reassembly with ACL filtering
- [ ] service core based telemetry and data base update.
- [ ] eBPF inspired flow distribution to multiple workers
+ - [ ] Primary configruation and Secodnary Processing
+ - [ ] Failure of secodnary, Primary pass through
+ - [ ] Flow calssification based on destination IP
+ - [ ] Inbound IP reassembly with ACL filtering
+ - [ ] service core based telemetry and data base update.
+ - [ ] eBPF inspired flow distribution to multiple workers
 
 
