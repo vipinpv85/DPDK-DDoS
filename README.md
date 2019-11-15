@@ -46,6 +46,6 @@ to leverage DPDK libraries and PMD feature to build line rate processing for
 - Test the custom build by cross checking examples like helloworld & l2fwd.
 
 ### application
- - meson <build directory>
- - ninja -C <build directory>
+ - ```meson <build directory>```
+ - ```ninja -C <build directory>```
 
