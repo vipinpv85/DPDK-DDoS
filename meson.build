@@ -1,25 +1,30 @@
-project('ddos', 'c', version : '1.0.0', license : 'GPL')
+project('ddos', 'c', version : '1.0.0', license : 'GPL',
+	default_options: ['enable_dpdk_sdk=static'])
 
 # check the OS is supported, rather than going any further
 supported_exec_envs = ['linux']
 exec_env = host_machine.system()
 if not supported_exec_envs.contains(exec_env)
-        error('unsupported system type "@0@"'.format(exec_env))
+	error('unsupported system type "@0@"'.format(exec_env))
 endif
 
-# define a handy variable for checking which OS we have.
-# gives us "is_windows", "is_freebsd" and "is_linux"
-foreach env:supported_exec_envs
-        set_variable('is_' + env, exec_env == env)
-endforeach
+
+pcap_dep = dependency('pcap', version : '>=1.0')
+dpdk_sdk = ''
+#if get_option('enable_dpdk_sdk')
+#	dpdk_sdk = 'I have to fetch the values'
+#endif
+message('dpdk_sdk: "' + dpdk_sdk + '"')
+
+#get meson found compiler
+compiler = meson.get_compiler('c')
+
+message('building on: "' + exec_env + '"')
+message('with compiler: "' + compiler.version() + '"')
+message('host machine: "' + host_machine.system() + '"')
 
 add_project_link_arguments('-Wl,--no-as-needed', language: 'c')
 add_project_arguments('-include', 'rte_config.h', language: 'c')
-
-c=meson.get_compiler('c')
-
-c_version = c.version()
-message('compiler version ' + c_version)
 
 ddos_conf = configuration_data()
 #ddos_conf.set('RTE_MAX_LCORE', get_option('max_lcores'))
@@ -50,45 +55,29 @@ warning_flags = [
         '-Wno-missing-field-initializers'
 ]
 
-compiler = meson.get_compiler('c')
-
 subdir('src')
 
-env = environment()
 dpdksdk = ''
 #get_option('rtesdk')
 dpdktarget = ''
 #get_option('rtetarget')
-dpdkfound = true
 
+dpdkfound = true
 if dpdksdk.strip() == ''
 	dpdkfound = false
 endif
 
-if dpdktarget.strip() == ''
-	dpdkfound = false
-endif
-
-dpdksdk = ''
-dpdktarget = ''
-
-r = run_command('echo', ' $RTE_SDK')
+r = run_command('echo', '$RTE_SDK')
 if r.returncode() == 0
   dpdksdk = r.stdout().strip()
   errortxt = r.stderr().strip()
 endif
 
-r = run_command('echo', ' $RTE_SDK')
+r = run_command('echo', '$RTE_SDK')
 if r.returncode() == 0
   dpdktarget = r.stdout().strip()
   errortxt = r.stderr().strip()
 endif
 
-dpdkincdir = dpdksdk.strip() + dpdktarget.strip() + '/include'
-#incdir = include_directories(dpdkincdir)
-
-#dpdkdep = dependency('dpdk')
-#executable('intercept', 'src/pkt-capture.c', dependencies : dpdkdep)
-#executable('ddos', 'src/pkt-ddos.c', dependencies : dpdkdep)
-#executable('ddos', 'src/pkt-ddos.c', include_directories : incdir, link_args : '-Wl,--linker-option')
-executable('ddos', 'src/pkt-ddos.c', link_args : '-Wl,--linker-option')
+message('dpdksdk: "' + dpdksdk + '"')
+message('dpdktarget: "' + dpdktarget + '"')
