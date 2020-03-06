@@ -20,7 +20,8 @@ to leverage DPDK libraries and PMD feature to build line rate processing for
 
 ## How to Build?
 
- - EBPF: `clang-9 -O2 -emit-llvm -I /usr/include/linux -c drop.c -o -| llc -march=bpf -mcpu=probe -filetype=obj -o test.o`
+ - EBPF
+ 1. drop: ```clang-9 -O2 -emit-llvm -I /usr/include/linux -c drop.c -o - `| llc -march=bpf -mcpu=probe -filetype=obj -o drop.o``` 
 
 ### dependency
  - DPDK
