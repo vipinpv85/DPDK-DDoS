@@ -22,6 +22,7 @@ to leverage DPDK libraries and PMD feature to build line rate processing for
 
  - EBPF
  1. drop: ```clang-9 -O2 -emit-llvm -I /usr/include/linux -c drop.c -o - `| llc -march=bpf -mcpu=probe -filetype=obj -o drop.o``` 
+ 2. pass: ```clang-9 -O2 -emit-llvm -I /usr/include/linux -c pass.c -o - `| llc -march=bpf -mcpu=probe -filetype=obj -o pass.o``` 
 
 ### dependency
  - DPDK
@@ -32,7 +33,8 @@ to leverage DPDK libraries and PMD feature to build line rate processing for
 | -- | -- |
 | DPDK | dpdk-stable-18.11.4 |
 
-### Build and Run
+### Run
+ - EBPF: `ip -force link set dev interfacename xdp off; ip -force link set dev interfacename xdp object binaryname section "prog"`
 
 #### DPDK 18.11.4
 - Download DPDK from dpdk.org.
