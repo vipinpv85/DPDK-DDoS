@@ -1,3 +1,5 @@
+/* log file in ```cat /sys/kernel/debug/tracing/trace``` */
+
 #include <linux/bpf.h>
 #include <linux/if_ether.h>
 #include <linux/if_vlan.h>
@@ -87,30 +89,6 @@ int balancer_ingress(struct xdp_md *ctx)
                         if ((eth_ptr + 1) > data_end)
                                 return XDP_ABORTED;
 
-                }
-
-                if ((eth_ptr->h_proto == bpf_htons(ETH_P_IP)) ||
-                    (eth_ptr->h_proto == bpf_htons(ETH_P_IPV6))) {
-                if ((eth_ptr->h_proto == bpf_htons(ETH_P_8021Q)) ||
-                    (eth_ptr->h_proto == bpf_htons(ETH_P_8021AD))) {
-                        vlan_ptr = (void *)(eth_ptr + 1);
-                        if ((vlan_ptr + 1) > data_end)
-                                return XDP_ABORTED;
-
-                        //bpf_printk(" vlan_tci (0x%x) next_protocol (0x%x)\n", vlan_ptr->h_vlan_TCI, vlan_ptr->h_vlan_encapsulated_proto);
-                        /* action: pop valn, lookup per port valn, or use vlan to find namespace and pop forward */
-                        #pragma unroll
-                        for (int i = 11; i >= 0; i--)
-                        {
-                                *((unsigned char *)eth_ptr + (i + 4)) = *((unsigned char *)eth_ptr + i);
-                        }
-
-                        if (bpf_xdp_adjust_head(ctx, (int)sizeof(struct vlan_hdr)))
-                                return XDP_ABORTED;
-
-                        eth_ptr = (struct ethhdr *)(long)ctx->data;
-                        if ((eth_ptr + 1) > ctx->data_end)
-                                return XDP_ABORTED;
                 }
 
                 if ((eth_ptr->h_proto == bpf_htons(ETH_P_IP)) ||
