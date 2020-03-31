@@ -17,6 +17,6 @@ explore use of MPI based packet filtering in user space.
 - MPI_FINALIZE – clean up all MPI state (must be the last MPI function called by a process)
 
 
-# Reference: `https://htor.inf.ethz.ch/teaching/mpi_tutorials/ppopp13/2013-02-24-ppopp-mpi-basic.pdf`
+# Reference: 
 
-
+- URL - `https://htor.inf.ethz.ch/teaching/mpi_tutorials/ppopp13/2013-02-24-ppopp-mpi-basic.pdf`
